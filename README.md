@@ -1,10 +1,10 @@
 # 🛒 Pipeline de Dados Instacart (End-to-End)
 
-Este repositório contém o projeto final prático de Engenharia de Dados, focado na construção de um pipeline *end-to-end* do zero. O objetivo é extrair dados de ficheiros CSV, processá-los utilizando a **Arquitetura Medalhão** (Raw, Refined, Marts) e disponibilizar os indicadores de negócio num **Dashboard Interativo**.
+Este repositório contém o projeto final prático de Engenharia de Dados, focado na construção de um pipeline *end-to-end* do zero. O objetivo é extrair dados de arquivos CSV, processá-los utilizando a **Arquitetura Medalhão** (Raw, Refined, Marts) e disponibilizar os indicadores de negócio em um **Dashboard Interativo**.
 
 ## 🛠️ Tecnologias Utilizadas
 - **Linguagem:** Python
-- **Base de Dados Analítica (OLAP):** DuckDB
+- **Banco de Dados Analítico (OLAP):** DuckDB
 - **Visualização / Frontend:** Streamlit
 - **Testes Unitários:** Pytest
 - **Versionamento:** Git e GitHub
@@ -16,11 +16,11 @@ O pipeline processa os dados em três camadas distintas para garantir a qualidad
 3. **Camada Marts (Gold):** Tabelas agregadas com indicadores de negócio (ex: top produtos mais vendidos, tendência de pedidos por dia da semana) prontas para consumo por ferramentas de BI ou Dashboards.
 
 ## 📂 Estrutura do Repositório
-- `data/`: Diretório destinado aos ficheiros CSV originais (mock data) e ao ficheiro da base de dados `instacart.duckdb`.
+- `data/`: Diretório destinado aos arquivos CSV originais (mock data) e ao arquivo do banco de dados `instacart.duckdb`.
 - `pipeline/`: Scripts de processamento de dados (`ingestao.py`, `transformacao.py`, `marts.py`).
 - `tests/`: Testes unitários do projeto (`test_transformacao.py`).
 - `app.py`: Aplicação web com o dashboard interativo em Streamlit.
-- `popular_dados.py`: Script utilitário para popular a base de dados DuckDB com dados de teste.
+- `popular_dados.py`: Script utilitário para popular o banco de dados DuckDB com dados de teste.
 - `requirements.txt`: Lista de dependências do projeto.
 
 ## 🚀 Como Executar o Projeto Localmente
@@ -39,13 +39,31 @@ python pipeline/marts.py          # Cria a camada Marts
 ```bash
 streamlit run app.py
 ```
-O painel abrirá automaticamente no seu navegador padrão.
+O dashboard abrirá automaticamente no seu navegador padrão.
+
+## 🎯 Perguntas de Negócio Respondidas pelo App
+Este dashboard foi desenhado para responder rapidamente a questões logísticas e comerciais essenciais:
+
+Quais são os produtos favoritos dos clientes? (Identificação dos itens com maior volume de pedidos e recompras).
+
+Em quais dias da semana o e-commerce tem pico de vendas? (Análise de comportamento temporal para dimensionamento de estoque e servidores).
+
+Quais são os horários de maior fluxo de pedidos ao longo do dia? (Identificação de janelas críticas de pico operacional).
+
+## 🔍 Granularidade dos Dados (Grãos)
+A modelagem nas camadas do pipeline seguiu rigorosamente a definição do grão analítico para evitar duplicações e garantir performance no DuckDB:
+
+mart_top_products (Camada Gold): O grão é de 1 linha por Produto (product_id / product_name), agregando o total de pedidos e recompras daquele item.
+
+mart_orders_by_dow (Camada Gold): O grão é de 1 linha por Dia da Semana, consolidando o volume global de pedidos para cada dia.
+
+mart_orders_by_hour (Camada Gold): O grão é de 1 linha por Hora do Dia (0 a 23h), mapeando a distribuição horária da demanda.
 
 ## 🧪 Testes Unitários
-O projeto conta com testes de qualidade utilizando dados fictícios (mock data) guardados em memória, garantindo que a base de dados oficial não é afetada.
-Para correr os testes, execute na raiz do projeto:
+O projeto conta com testes de qualidade utilizando dados fictícios (mock data) armazenados em memória, garantindo que o banco de dados oficial não seja afetado.
+Para executar os testes, rode na raiz do projeto:
 ```bash
 pytest
 ```
 ## 📄 Licença
-Distribuído sob a licença MIT. Veja o ficheiro LICENSE para mais informações.
+Distribuído sob a licença MIT. Veja o arquivo LICENSE para mais informações.
