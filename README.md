@@ -20,6 +20,7 @@ O pipeline processa os dados em três camadas distintas para garantir a qualidad
 - `pipeline/`: Scripts de processamento de dados (`ingestao.py`, `transformacao.py`, `marts.py`).
 - `tests/`: Testes unitários do projeto (`test_transformacao.py`).
 - `app.py`: Aplicação web com o dashboard interativo em Streamlit.
+- `popular_dados.py`: Script utilitário para popular a base de dados DuckDB com dados de teste.
 - `requirements.txt`: Lista de dependências do projeto.
 
 ## 🚀 Como Executar o Projeto Localmente
