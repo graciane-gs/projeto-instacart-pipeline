@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#00b37e"          # Cor principal (ex: verde esmeralda)
+backgroundColor = "#0e1117"       # Cor de fundo principal (modo escuro)
+secondaryBackgroundColor = "#161b22" # Cor de fundo dos blocos/sidebar
+textColor = "#f0f6fc"             # Cor do texto
+font = "sans serif"
