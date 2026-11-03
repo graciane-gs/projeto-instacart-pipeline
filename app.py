@@ -2,6 +2,7 @@ import streamlit as st
 import duckdb
 
 # Conecta ao banco DuckDB (somente leitura para maior segurança no frontend)
+# Definir o caminho correto para a base de dados dentro da pasta data/
 db_path = "data/instacart.duckdb"
 conn = duckdb.connect(db_path, read_only=True)
 
