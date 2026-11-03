@@ -49,5 +49,16 @@ conn.execute("""
     ) AS t(order_hour_of_day, total_orders)
 """)
 
+# 4. NOVO: Top Departamentos
+conn.execute("""
+    CREATE OR REPLACE TABLE mart_top_departments AS 
+    SELECT * FROM (VALUES 
+        ('Produce (Hortifruti)', 94520),
+        ('Dairy Eggs (Laticínios)', 54200),
+        ('Snacks (Lanches)', 28400),
+        ('Beverages (Bebidas)', 26800),
+        ('Frozen (Congelados)', 22100)
+    ) AS t(department, total_orders)
+""")
 conn.close()
 print("Dados populados com sucesso, incluindo horas de pico!")

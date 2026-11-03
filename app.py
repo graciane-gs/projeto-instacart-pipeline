@@ -35,6 +35,13 @@ st.area_chart(df_hour, x="order_hour_of_day", y="total_orders")
 
 st.divider()
 
+# NOVO: Gráfico de Departamentos
+st.subheader("🛒 Departamentos com Maior Volume de Vendas")
+df_dept = conn.execute("SELECT department, total_orders FROM mart_top_departments ORDER BY total_orders DESC").df()
+st.bar_chart(df_dept, x="department", y="total_orders")
+
+st.divider()
+
 st.subheader("📊 Tabela Detalhada: Produtos e Recompras")
 df_detalhado = conn.execute("SELECT * FROM mart_top_products").df()
 st.dataframe(df_detalhado, use_container_width=True)
