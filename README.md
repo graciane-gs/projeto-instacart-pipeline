@@ -73,5 +73,6 @@ Distribuído sob a licença MIT. Veja o arquivo LICENSE para mais informações.
 **Graciane Santana**  
 *Desafio Engenheiro de Dados Júnior*
 
-## 🔗 **GitHub:** [@graciane-gs](https://github.com/graciane-gs)  
-## 💼 **LinkedIn:** [Conecte-se comigo](https://www.linkedin.com/in/graciane-santana)
+🔗 **GitHub:** [@graciane-gs](https://github.com/graciane-gs)  
+💼 **LinkedIn:** [Conecte-se comigo](https://www.linkedin.com/in/graciane-santana)
+
