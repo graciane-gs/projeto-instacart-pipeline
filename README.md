@@ -89,8 +89,7 @@ Distribuído sob a licença MIT. Veja o arquivo LICENSE para mais informações.
 
 Durante o desenvolvimento deste projeto, a Inteligência Artificial (Gemini) foi utilizada como suporte (pair programming), mas exigiu senso crítico e correções manuais ao longo do processo. Alguns exemplos incluem:
 
-**Formatação e Markdown:** A IA inseriu tags HTML (`
-<div align="justify">`) de forma muito abrangente no `README.md`, o que acabou quebrando a renderização visual das listas e dos blocos de código no GitHub. Foi necessário corrigir manualmente a posição das tags.
+**Formatação e Markdown:** A IA inseriu tags HTML de forma muito abrangente no README.md, o que acabou quebrando a renderização visual das listas e dos blocos de código no GitHub. Foi necessário corrigir manualmente a estrutura para Markdown puro.
 
 **Cache do Git vs .gitignore:** Embora a IA tenha sugerido criar o `.gitignore` para a pasta `.devcontainer` e para arquivos `.duckdb`, ela não alertou inicialmente que o arquivo `instacart.duckdb` já havia sido rastreado pelo Git. Isso exigiu uma intervenção posterior com `git rm --cached` para limpar o histórico do repositório remoto.
 
