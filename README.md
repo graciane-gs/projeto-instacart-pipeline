@@ -54,23 +54,23 @@ O dashboard abrirá automaticamente no seu navegador padrão.
 
 ## 🎯 Perguntas de Negócio Respondidas pelo App
 
-Este dashboard foi desenhado para responder rapidamente a questões logísticas e comerciais essenciais:
+Este painel foi desenhado para responder rapidamente a questões logísticas e comerciais essenciais:
 
-Quais são os produtos favoritos dos clientes? (Identificação dos itens com maior volume de pedidos e recompras).
+- **Quais são os produtos favoritos dos clientes?** (Identificação dos itens com maior volume de pedidos e recompras).
 
-Em quais dias da semana o e-commerce tem pico de vendas? (Análise de comportamento temporal para dimensionamento de estoque e servidores).
+- **Em quais dias da semana o e-commerce tem pico de vendas?** (Análise de comportamento temporal para dimensionamento de estoque e servidores).
 
-Quais são os horários de maior fluxo de pedidos ao longo do dia? (Identificação de janelas críticas de pico operacional).
+- **Quais são os horários de maior fluxo de pedidos ao longo do dia?** (Identificação de janelas críticas de pico operacional).
 
 ## 🔍 Granularidade dos Dados (Grãos)
 
-A modelagem nas camadas do pipeline seguiu rigorosamente a definição do grão analítico para evitar duplicações e garantir performance no DuckDB:
+A modelagem nas camadas do pipeline é rigorosamente a definição do grão analítico para evitar duplicações e garantir o desempenho no DuckDB:
 
-**mart_top_products (Camada Gold):** O grão é de 1 linha por Produto (product_id / product_name), agregando o total de pedidos e recompras daquele item.
+- **`mart_top_products`** (Camada Gold): O grão é de 1 linha por Produto (`product_id` / `product_name`), agregando o total de pedidos e recomprando esse item.
 
-**mart_orders_by_dow (Camada Gold):** O grão é de 1 linha por Dia da Semana, consolidando o volume global de pedidos para cada dia.
+- **`mart_orders_by_dow`** (Camada Gold): O grão é de 1 linha por Dia da Semana, consolidando o volume global de pedidos para cada dia.
 
-**mart_orders_by_hour (Camada Gold):** O grão é de 1 linha por Hora do Dia (0 a 23h), mapeando a distribuição horária da demanda.
+- **`mart_orders_by_hour`** (Camada Gold): O grão é de 1 linha por Hora do Dia (0 às 23h), mapeando a distribuição horária da demanda.
 
 ## 🧪 Testes Unitários
 
