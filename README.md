@@ -63,6 +63,7 @@ Em quais dias da semana o e-commerce tem pico de vendas? (Análise de comportame
 Quais são os horários de maior fluxo de pedidos ao longo do dia? (Identificação de janelas críticas de pico operacional).
 
 ## 🔍 Granularidade dos Dados (Grãos)
+
 A modelagem nas camadas do pipeline seguiu rigorosamente a definição do grão analítico para evitar duplicações e garantir performance no DuckDB:
 
 **mart_top_products (Camada Gold):** O grão é de 1 linha por Produto (product_id / product_name), agregando o total de pedidos e recompras daquele item.
@@ -73,9 +74,7 @@ A modelagem nas camadas do pipeline seguiu rigorosamente a definição do grão 
 
 ## 🧪 Testes Unitários
 
-<div align="justify">
 O projeto conta com testes de qualidade utilizando dados fictícios (mock data) armazenados em memória, garantindo que o banco de dados oficial não seja afetado.
-</div>
 
 Para executar os testes, rode na raiz do projeto:
 ```bash
@@ -88,9 +87,7 @@ Distribuído sob a licença MIT. Veja o arquivo LICENSE para mais informações.
 
 ## 🤖 Onde a IA errou
 
-<div align="justify">
 Durante o desenvolvimento deste projeto, a Inteligência Artificial (Gemini) foi utilizada como suporte (pair programming), mas exigiu senso crítico e correções manuais ao longo do processo. Alguns exemplos incluem:
-</div>
 
 **Formatação e Markdown:** A IA inseriu tags HTML (`
 <div align="justify">`) de forma muito abrangente no `README.md`, o que acabou quebrando a renderização visual das listas e dos blocos de código no GitHub. Foi necessário corrigir manualmente a posição das tags.
