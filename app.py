@@ -2,21 +2,39 @@ import streamlit as st
 import duckdb
 import os
 
-# Caminho para o banco de dados DuckDB
 db_path = "data/instacart.duckdb"
 
-# Se o banco de dados não existir (ex: no deploy do Streamlit Cloud), executa o pipeline automaticamente
-if not os.path.exists(db_path):
-    st.info("🔄 Inicializando o banco de dados e executando o pipeline pela primeira vez...")
+# Função para garantir que o banco e todas as tabelas marts essenciais existem
+def verificar_e_executar_pipeline():
     os.makedirs("data", exist_ok=True)
+    precisa_executar = False
     
-    # Executa os scripts na ordem correta para popular o banco
-    if os.path.exists("popular_dados.py"):
-        os.system("python popular_dados.py")
-    os.system("python pipeline/ingestao.py")
-    os.system("python pipeline/transformacao.py")
-    os.system("python pipeline/marts.py")
-    st.success("✅ Pipeline executado com sucesso!")
+    if not os.path.exists(db_path):
+        precisa_executar = True
+    else:
+        try:
+            # Testa se as tabelas marts já foram criadas no banco existente
+            conn_check = duckdb.connect(db_path, read_only=True)
+            tables = [t[0] for t in conn_check.execute("SHOW TABLES").fetchall()]
+            conn_check.close()
+            
+            # Se faltar alguma tabela nova, força a reexecução do pipeline
+            if "mart_top_products" not in tables or "mart_orders_by_hour" not in tables or "mart_top_departments" not in tables:
+                precisa_executar = True
+        except Exception:
+            precisa_executar = True
+            
+    if precisa_executar:
+        st.info("🔄 Atualizando o banco de dados e executando o pipeline completo...")
+        if os.path.exists("popular_dados.py"):
+            os.system("python popular_dados.py")
+        os.system("python pipeline/ingestao.py")
+        os.system("python pipeline/transformacao.py")
+        os.system("python pipeline/marts.py")
+        st.success("✅ Pipeline atualizado com sucesso!")
+
+# Executa a verificação
+verificar_e_executar_pipeline()
 
 # Conecta ao banco DuckDB
 conn = duckdb.connect(db_path)
