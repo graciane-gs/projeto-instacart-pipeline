@@ -32,7 +32,31 @@ def criar_marts():
     """
     conn.execute(query_dow)
     
-    print("Marts criadas com sucesso: 'mart_top_products' e 'mart_orders_by_dow'!")
+    # Mart 3: Horas de Pico de Pedidos (ao longo do dia)
+    query_hour = """
+    CREATE OR REPLACE TABLE mart_orders_by_hour AS 
+    SELECT 
+        order_hour_of_day,
+        COUNT(DISTINCT order_id) AS total_orders
+    FROM refined_order_details
+    GROUP BY order_hour_of_day
+    ORDER BY order_hour_of_day
+    """
+    conn.execute(query_hour)
+    
+    # Mart 4: Departamentos com Maior Volume de Vendas
+    query_dept = """
+    CREATE OR REPLACE TABLE mart_top_departments AS 
+    SELECT 
+        department,
+        COUNT(order_id) AS total_orders
+    FROM refined_order_details
+    GROUP BY department
+    ORDER BY total_orders DESC
+    """
+    conn.execute(query_dept)
+    
+    print("Marts criadas com sucesso: 'mart_top_products', 'mart_orders_by_dow', 'mart_orders_by_hour' e 'mart_top_departments'!")
     
     # Lista todas as tabelas para visualizarmos a evolução do banco
     tabelas = conn.execute("SHOW TABLES").fetchall()
