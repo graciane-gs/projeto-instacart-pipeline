@@ -1,8 +1,24 @@
 import streamlit as st
 import duckdb
+import os
 
-# Conecta ao banco DuckDB (somente leitura para maior segurança no frontend)
+# Caminho para o banco de dados DuckDB
 db_path = "data/instacart.duckdb"
+
+# Se o banco de dados não existir (ex: no deploy do Streamlit Cloud), executa o pipeline automaticamente
+if not os.path.exists(db_path):
+    st.info("🔄 Inicializando o banco de dados e executando o pipeline pela primeira vez...")
+    os.makedirs("data", exist_ok=True)
+    
+    # Executa os scripts na ordem correta para popular o banco
+    if os.path.exists("popular_dados.py"):
+        os.system("python popular_dados.py")
+    os.system("python pipeline/ingestao.py")
+    os.system("python pipeline/transformacao.py")
+    os.system("python pipeline/marts.py")
+    st.success("✅ Pipeline executado com sucesso!")
+
+# Conecta ao banco DuckDB
 conn = duckdb.connect(db_path, read_only=True)
 
 # Configuração inicial da página
@@ -28,14 +44,14 @@ with col2:
 
 st.divider()
 
-# NOVO: Seção de Horas de Pico
+# Seção de Horas de Pico
 st.subheader("⏰ Horas de Pico de Pedidos (ao longo do dia)")
 df_hour = conn.execute("SELECT order_hour_of_day, total_orders FROM mart_orders_by_hour ORDER BY order_hour_of_day").df()
 st.area_chart(df_hour, x="order_hour_of_day", y="total_orders")
 
 st.divider()
 
-# NOVO: Gráfico de Departamentos
+# Gráfico de Departamentos
 st.subheader("🛒 Departamentos com Maior Volume de Vendas")
 df_dept = conn.execute("SELECT department, total_orders FROM mart_top_departments ORDER BY total_orders DESC").df()
 st.bar_chart(df_dept, x="department", y="total_orders")
