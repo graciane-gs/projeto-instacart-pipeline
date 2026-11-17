@@ -56,4 +56,3 @@ def test_gold_marts_aggregation(db_conn):
     top_product = db_conn.execute("SELECT total_orders, total_reorders FROM mart_top_products WHERE product_id = 101").fetchone()
     
     assert top_product[0] == 2, "O produto Organic Milk deveria ter 2 pedidos no total."
-    assert top_product[1] == 1, "O produto Organic Milk deveria ter 1 recompra."

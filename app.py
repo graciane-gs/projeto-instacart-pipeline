@@ -19,7 +19,7 @@ if not os.path.exists(db_path):
     st.success("✅ Pipeline executado com sucesso!")
 
 # Conecta ao banco DuckDB
-conn = duckdb.connect(db_path, read_only=True)
+conn = duckdb.connect(db_path)
 
 # Configuração inicial da página
 st.set_page_config(page_title="Dashboard Instacart", page_icon="🛒", layout="wide")
