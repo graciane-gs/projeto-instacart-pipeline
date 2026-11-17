@@ -4,39 +4,40 @@ import os
 
 db_path = "data/instacart.duckdb"
 
-# Função para garantir que o banco e todas as tabelas marts essenciais existem
-def verificar_e_executar_pipeline():
+# Função para garantir que o banco e as tabelas Gold existam
+def garantir_banco_criado():
     os.makedirs("data", exist_ok=True)
-    precisa_executar = False
     
-    if not os.path.exists(db_path):
-        precisa_executar = True
-    else:
+    # Conecta ao DuckDB (cria o arquivo se não existir)
+    conn = duckdb.connect(db_path)
+    
+    # Verifica se as tabelas marts já existem
+    tables = [t[0] for t in conn.execute("SHOW TABLES").fetchall()]
+    
+    if "mart_top_products" not in tables:
+        st.info("🔄 Gerando dados e executando o pipeline pela primeira vez...")
+        
+        # Se você tiver os scripts de população e pipeline, executa-os de forma segura:
         try:
-            # Testa se as tabelas marts já foram criadas no banco existente
-            conn_check = duckdb.connect(db_path, read_only=True)
-            tables = [t[0] for t in conn_check.execute("SHOW TABLES").fetchall()]
-            conn_check.close()
-            
-            # Se faltar alguma tabela nova, força a reexecução do pipeline
-            if "mart_top_products" not in tables or "mart_orders_by_hour" not in tables or "mart_top_departments" not in tables:
-                precisa_executar = True
+            import popular_dados
+            # Se popular_dados tiver uma função principal, chame-a aqui, senão o os.system funciona:
         except Exception:
-            precisa_executar = True
+            pass
             
-    if precisa_executar:
-        st.info("🔄 Atualizando o banco de dados e executando o pipeline completo...")
-        if os.path.exists("popular_dados.py"):
-            os.system("python popular_dados.py")
+        # Execução robusta via subprocess/os para garantir criação correta
+        os.system("python popular_dados.py")
         os.system("python pipeline/ingestao.py")
         os.system("python pipeline/transformacao.py")
         os.system("python pipeline/marts.py")
-        st.success("✅ Pipeline atualizado com sucesso!")
+        
+        st.success("✅ Pipeline executado com sucesso!")
+    
+    conn.close()
 
-# Executa a verificação
-verificar_e_executar_pipeline()
+# Garante que o banco está pronto antes de conectar para o dashboard
+garantir_banco_criado()
 
-# Conecta ao banco DuckDB
+# Conexão principal para o dashboard
 conn = duckdb.connect(db_path)
 
 # Configuração inicial da página
